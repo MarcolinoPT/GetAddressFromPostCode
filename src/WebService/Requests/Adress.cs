@@ -1,10 +1,13 @@
-﻿using System;
-namespace WebService.Requests
+﻿namespace WebService.Requests
 {
     public class Adress
     {
-        public Adress()
-        {
-        }
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+        public string Line3 { get; set; }
+        public string Line4 { get; set; }
+        public string Locality { get; set;}
+        public string TownOrCity { get; set; }
+        public string County { get; set; }
     }
 }
