@@ -7,6 +7,9 @@ namespace Api.Models
     {
         [Required]
         [FromQuery(Name = "postcode")]
-        public string Postcode { get; set; }
+        public string PostCode { get; set; }
+
+        [FromQuery(Name = "housenumber")]
+        public string Housenumber { get; set; }
     }
 }

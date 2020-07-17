@@ -8,7 +8,7 @@ namespace FindAddresses.Services
 {
     public interface IPostCodeService
     {
-        Task<PostCodeDto> GetPostCodeAsync(string postcode);
+        Task<PostCodeDto> GetPostCodeAsync(string postCode, string houseNumber);
     }
 
     public class PostCodeService : IPostCodeService
@@ -20,9 +20,9 @@ namespace FindAddresses.Services
             this.webService = webService ?? throw new System.ArgumentNullException(nameof(webService));
         }
 
-        public async Task<PostCodeDto> GetPostCodeAsync(string postcode)
+        public async Task<PostCodeDto> GetPostCodeAsync(string postcode, string houseNumber)
         {
-            var result = await this.webService.FetchPostCodeAsync(postcode);
+            var result = await this.webService.FetchPostCodeAsync(postcode, houseNumber);
             return new PostCodeDto
             {
                 Addresses = result.Addresses.Select(address => new Adress

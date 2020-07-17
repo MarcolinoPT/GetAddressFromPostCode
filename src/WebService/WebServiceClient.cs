@@ -9,7 +9,7 @@ namespace WebService
 {
     public interface IWebServiceClient
     {
-        Task<PostCode> FetchPostCodeAsync(string postcode);
+        Task<PostCode> FetchPostCodeAsync(string postcode, string houseNumber);
     }
 
     public class WebServiceClient : IWebServiceClient
@@ -25,11 +25,17 @@ namespace WebService
             this.httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
         }
 
-        public async Task<PostCode> FetchPostCodeAsync(string postcode)
+        public async Task<PostCode> FetchPostCodeAsync(string postCode, string houseNumber)
         {
+            // Build house number query parameter
+            var houseNumberQuery = string.IsNullOrEmpty(houseNumber)
+                ? string.Empty
+                : $"&housenumber={houseNumber}";
+            // Build request uri
+            var requestUri = $"lookup?postcode={postCode}{houseNumberQuery}";
             var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                "lookup?postcode=" + postcode);
+                method: HttpMethod.Get,
+                requestUri: requestUri);
             // TODO Pull cancellation token to method signature
             var cancellationToken = new CancellationToken();
             using (var response = await this.httpClient.SendAsync(request,

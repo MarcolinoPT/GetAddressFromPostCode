@@ -21,9 +21,9 @@ namespace FindAddresses.Controllers
         public async Task<IActionResult> GetAddress([FromQuery] Address address)
         {
             // Only valid postcodes
-            if(Postcode.IsValid(address.Postcode))
+            if(Postcode.IsValid(address.PostCode))
             {
-                var result = await this.service.GetPostCodeAsync(address.Postcode);
+                var result = await this.service.GetPostCodeAsync(address.PostCode, address.Housenumber);
                 return base.Ok(result);
             }
             // Else we consider a bad request and return the model
