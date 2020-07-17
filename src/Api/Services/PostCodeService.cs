@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Extensions;
 using FindAddresses.DTOs;
 using WebService;
 
@@ -34,8 +35,8 @@ namespace FindAddresses.Services
                     Locality = address.Locality,
                     TownOrCity = address.TownOrCity
                 }).ToList(),
-                Latitude = result.Latitude,
-                Longitude = result.Longitude
+                DistanceInKm = result.DistanceToHeathrowAirportInKm(),
+                DistanceInMiles = result.DistanceToHeathrowAirportInMiles()
             };
         }
     }
