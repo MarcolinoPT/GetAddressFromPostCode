@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+using Api.Models;
 using FindAddresses.Services;
 using Microsoft.AspNetCore.Mvc;
+using PostcodeParser.UK;
 
 namespace FindAddresses.Controllers
 {
@@ -16,11 +18,17 @@ namespace FindAddresses.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetAddress([FromQuery] string postcode)
+        public async Task<IActionResult> GetAddress([FromQuery] Address address)
         {
-            // TODO Validate post code format
-            var result = await this.service.GetPostCodeAsync(postcode);
-            return base.Ok(result);
+            // Only valid postcodes
+            if(Postcode.IsValid(address.Postcode))
+            {
+                var result = await this.service.GetPostCodeAsync(address.Postcode);
+                return base.Ok(result);
+            }
+            // Else we consider a bad request and return the model
+            // to inform the user of the bad request
+            return base.BadRequest(address);
         }
     }
 }
