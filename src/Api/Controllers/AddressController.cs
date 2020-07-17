@@ -1,4 +1,5 @@
-﻿using FindAddresses.Services;
+﻿using System.Threading.Tasks;
+using FindAddresses.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FindAddresses.Controllers
@@ -15,10 +16,11 @@ namespace FindAddresses.Controllers
         }
 
         [HttpGet()]
-        public IActionResult GetAddress([FromQuery] string postcode)
+        public async Task<IActionResult> GetAddress([FromQuery] string postcode)
         {
             // TODO Validate post code format
-            return base.Ok(this.service.GetPostCode(postcode));
+            var result = await this.service.GetPostCodeAsync(postcode);
+            return base.Ok(result);
         }
     }
 }
