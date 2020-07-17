@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace WebService.Requests
+namespace WebService.Responses
 { 
-    public class PostCodeDto
+    public class PostCode
     {
         public ICollection<Adress> Addresses { get; set; }
         public double Latitude { get; set; }

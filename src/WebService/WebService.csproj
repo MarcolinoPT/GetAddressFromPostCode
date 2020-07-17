@@ -8,6 +8,6 @@
     <PackageReference Include="RestEase" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Requests\" />
+    <Folder Include="Responses\" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace WebService.Requests
+﻿namespace WebService.Responses
 {
     public class Adress
     {

@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindAddresses", "FindAddresses.csproj", "{A2CF6225-FD4E-4504-9EB9-E3D39DBEBDC1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "src\WebService\WebService.csproj", "{B982CD3A-178A-42B0-BDA6-59CAAC1E31C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\Api\Api.csproj", "{F2C6E6A3-895B-43AB-9B27-FCD9702C5035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,13 +11,13 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A2CF6225-FD4E-4504-9EB9-E3D39DBEBDC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A2CF6225-FD4E-4504-9EB9-E3D39DBEBDC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A2CF6225-FD4E-4504-9EB9-E3D39DBEBDC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A2CF6225-FD4E-4504-9EB9-E3D39DBEBDC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B982CD3A-178A-42B0-BDA6-59CAAC1E31C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B982CD3A-178A-42B0-BDA6-59CAAC1E31C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B982CD3A-178A-42B0-BDA6-59CAAC1E31C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B982CD3A-178A-42B0-BDA6-59CAAC1E31C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C6E6A3-895B-43AB-9B27-FCD9702C5035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C6E6A3-895B-43AB-9B27-FCD9702C5035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C6E6A3-895B-43AB-9B27-FCD9702C5035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C6E6A3-895B-43AB-9B27-FCD9702C5035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WebService.Requests
+namespace FindAddresses.DTOs
 { 
     public class PostCodeDto
     {

@@ -1,4 +1,4 @@
-﻿namespace WebService.Requests
+﻿namespace FindAddresses.DTOs
 {
     public class Adress
     {

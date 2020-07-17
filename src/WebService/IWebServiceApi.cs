@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using WebService.Requests;
+using WebService.Responses;
 using RestEase;
 
 namespace WebService
@@ -7,6 +7,6 @@ namespace WebService
     public interface IWebServiceApi
     {
         [Get("lookup")]
-        Task<PostCodeDto> FetchPostCodeAsync([Query] string postcode);
+        Task<PostCode> FetchPostCodeAsync([Query] string postcode);
     }
 }
