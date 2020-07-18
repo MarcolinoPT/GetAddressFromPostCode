@@ -5,31 +5,45 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = {
+        addresses: undefined,
+        loading: false,
+        postcode: undefined,
+        housenumber: undefined
+     };
+    this.handleHouseNumberChange = this.handleHouseNumberChange.bind(this);
+    this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount() {
-    this.populateWeatherData();
-  }
-
-  static renderForecastsTable(forecasts) {
+  static renderResultsTable(addresses) {
+    if(!addresses || !addresses.addresses || addresses.addresses.length === 0){
+      return (
+      <div>
+        <span>No results!</span>
+      </div>
+        );
+    }
     return (
       <table className='table table-striped' aria-labelledby="tabelLabel">
         <thead>
           <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
+            <th>Distance: <span>{addresses.distanceInKm} Km or {addresses.distanceInMiles} Miles</span></th>
+          </tr>
+          <tr>
+            <th>Addresses</th>
+            <th>Locality</th>
+            <th>Town/City</th>
+            <th>County</th>
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
+          {addresses.addresses && addresses.addresses.map((address, index) =>
+            <tr key={index}>
+              <td>{address.line1 + address.line2 + address.line3 + address.line4}</td>
+              <td>{address.locality}</td>
+              <td>{address.townOrCity}</td>
+              <td>{address.county}</td>
             </tr>
           )}
         </tbody>
@@ -37,23 +51,54 @@ export class FetchData extends Component {
     );
   }
 
+  handlePostCodeChange(event){
+    this.setState({ postcode: event.target.value });
+  }
+
+  handleHouseNumberChange(event){
+    this.setState({ housenumber: event.target.value });
+  }
+
+  handleSubmit(event){
+    this.setState({ loading: true});
+    console.log(this.state);
+    event.preventDefault();
+    this.submitSearch();
+  }
+
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+      : FetchData.renderResultsTable(this.state.addresses);
 
     return (
       <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
-        {contents}
+        <form onSubmit={this.handleSubmit}>
+            <h1 id="tabelLabel" >Find customer address</h1>
+            <div>
+              <label>Post code</label>
+              <input type="text" onChange={this.handlePostCodeChange} />
+            </div>
+            <div>
+              <label>House number</label>
+              <input type="text" onChange={this.handleHouseNumberChange} />
+            </div>
+            <input type="submit" value="Search" />
+        </form>
+        <div>
+          {contents}
+        </div>
       </div>
     );
   }
 
-  async populateWeatherData() {
-    const response = await fetch('weatherforecast');
+  async submitSearch(){
+    const { postcode, housenumber } = this.state;
+    const uri = `address?postcode=${postcode}` + (housenumber ? `&housenumber=${housenumber}` : "") ;
+    const response = await fetch(uri);
+    console.log(response);
     const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    this.setState({ addresses: data, loading: false})
+    console.log(this.state);
   }
 }
