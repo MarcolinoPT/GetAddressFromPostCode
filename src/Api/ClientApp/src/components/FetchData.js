@@ -106,7 +106,9 @@ export class FetchData extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderResultsTable(this.state.addresses, this.state.searchHistory);
+      :  (this.state.error
+          ? <p><em>An error occurred, please try again!</em></p>
+          : FetchData.renderResultsTable(this.state.addresses, this.state.searchHistory));
 
     return (
       <div>
@@ -131,7 +133,12 @@ export class FetchData extends Component {
     const { postcode, housenumber } = this.state;
     const uri = `address?postcode=${postcode}` + (housenumber ? `&housenumber=${housenumber}` : "") ;
     const response = await fetch(uri);
-    const data = await response.json();
-    this.setState({ addresses: data, loading: false})
+    if(response.ok){
+      const data = await response.json();
+      this.setState({ addresses: data, loading: false, error: false});
+    }
+    else{
+      this.setState({ loading: false, error: true});
+    }
   }
 }
