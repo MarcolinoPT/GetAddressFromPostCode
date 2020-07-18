@@ -9,45 +9,70 @@ export class FetchData extends Component {
         addresses: undefined,
         loading: false,
         postcode: undefined,
-        housenumber: undefined
+        housenumber: undefined,
+        searchHistory: []
      };
     this.handleHouseNumberChange = this.handleHouseNumberChange.bind(this);
     this.handlePostCodeChange = this.handlePostCodeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  static renderResultsTable(addresses) {
-    if(!addresses || !addresses.addresses || addresses.addresses.length === 0){
+  static renderResultsTable(addresses, searchHistory) {
+    if(!addresses || !addresses.addresses){
+      return(<div></div>)
+    }
+    if(addresses.addresses.length === 0){
       return (
       <div>
+        <br></br>
         <span>No results!</span>
       </div>
         );
     }
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
-        <thead>
-          <tr>
-            <th>Distance: <span>{addresses.distanceInKm} Km or {addresses.distanceInMiles} Miles</span></th>
-          </tr>
-          <tr>
-            <th>Addresses</th>
-            <th>Locality</th>
-            <th>Town/City</th>
-            <th>County</th>
-          </tr>
-        </thead>
-        <tbody>
-          {addresses.addresses && addresses.addresses.map((address, index) =>
-            <tr key={index}>
-              <td>{address.line1 + address.line2 + address.line3 + address.line4}</td>
-              <td>{address.locality}</td>
-              <td>{address.townOrCity}</td>
-              <td>{address.county}</td>
+      <div>
+        <br></br>
+        <h3>Search history</h3>
+        <table className='table table-striped' aria-labelledby="tabelLabel">
+          <thead>
+            <tr>
+              <th>Post code</th>
+              <th>House number</th>
             </tr>
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {searchHistory && searchHistory.map((search, index) =>
+              <tr key={index}>
+                <td>{search.postcode}</td>
+                <td>{search.housenumber}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <br></br>
+        <h3>Search results</h3>
+        <span>Distance: {addresses.distanceInKm.toFixed(2)} Km or {addresses.distanceInMiles.toFixed(2)} Miles</span>
+        <table className='table table-striped' aria-labelledby="tabelLabel">
+          <thead>
+            <tr>
+              <th>Addresses</th>
+              <th>Locality</th>
+              <th>Town/City</th>
+              <th>County</th>
+            </tr>
+          </thead>
+          <tbody>
+            {addresses.addresses && addresses.addresses.map((address, index) =>
+              <tr key={index}>
+                <td>{address.line1 + address.line2 + address.line3 + address.line4}</td>
+                <td>{address.locality}</td>
+                <td>{address.townOrCity}</td>
+                <td>{address.county}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     );
   }
 
@@ -60,34 +85,38 @@ export class FetchData extends Component {
   }
 
   handleSubmit(event){
-    this.setState({ loading: true});
-    console.log(this.state);
+    // Prevent page reload
     event.preventDefault();
+    // Update history search
+    let { searchHistory } = this.state;
+    // Push new search
+    searchHistory.push({ postcode: this.state.postcode, housenumber: this.state.housenumber});
+    // Filter search history and save to state
+    searchHistory = searchHistory.length > 3 ? searchHistory.slice(1, 4) : searchHistory;
+    this.setState({ loading: true, searchHistory: searchHistory});
     this.submitSearch();
   }
 
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderResultsTable(this.state.addresses);
+      : FetchData.renderResultsTable(this.state.addresses, this.state.searchHistory);
 
     return (
       <div>
+        <h2 id="tabelLabel" >Find customer address</h2>
         <form onSubmit={this.handleSubmit}>
-            <h1 id="tabelLabel" >Find customer address</h1>
             <div>
               <label>Post code</label>
               <input type="text" onChange={this.handlePostCodeChange} />
-            </div>
-            <div>
-              <label>House number</label>
+              <label>House number (optional)</label>
               <input type="text" onChange={this.handleHouseNumberChange} />
+              <input type="submit" value="Search" />
             </div>
-            <input type="submit" value="Search" />
         </form>
-        <div>
+      <div>
           {contents}
-        </div>
+      </div>
       </div>
     );
   }
@@ -96,9 +125,7 @@ export class FetchData extends Component {
     const { postcode, housenumber } = this.state;
     const uri = `address?postcode=${postcode}` + (housenumber ? `&housenumber=${housenumber}` : "") ;
     const response = await fetch(uri);
-    console.log(response);
     const data = await response.json();
     this.setState({ addresses: data, loading: false})
-    console.log(this.state);
   }
 }
