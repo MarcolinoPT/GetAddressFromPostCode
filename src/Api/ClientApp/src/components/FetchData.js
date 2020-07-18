@@ -97,6 +97,8 @@ export class FetchData extends Component {
     searchHistory.push({ postcode: this.state.postcode, housenumber: this.state.housenumber});
     // Filter search history and save to state
     searchHistory = searchHistory.length > 3 ? searchHistory.slice(1, 4) : searchHistory;
+    // Reverse to show latest 1st
+    searchHistory.reverse();
     this.setState({ loading: true, searchHistory: searchHistory});
     this.submitSearch();
   }
