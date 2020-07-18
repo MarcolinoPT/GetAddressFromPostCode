@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Postcode from 'postcode';
 
 export class FetchData extends Component {
   static displayName = FetchData.name;
@@ -77,7 +78,10 @@ export class FetchData extends Component {
   }
 
   handlePostCodeChange(event){
-    this.setState({ postcode: event.target.value });
+    const postCode =  Postcode.isValid(event.target.value)
+    ? event.target.value
+    : undefined;
+    this.setState({ postcode: postCode });
   }
 
   handleHouseNumberChange(event){
@@ -111,7 +115,7 @@ export class FetchData extends Component {
               <input type="text" onChange={this.handlePostCodeChange} />
               <label>House number (optional)</label>
               <input type="text" onChange={this.handleHouseNumberChange} />
-              <input type="submit" value="Search" />
+              <input type="submit" value="Search" disabled={!this.state.postcode}/>
             </div>
         </form>
       <div>
